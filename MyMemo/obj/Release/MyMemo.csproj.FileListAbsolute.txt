@@ -1,0 +1,8 @@
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\bin\Release\MyMemo.exe.config
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\bin\Release\MyMemo.exe
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\bin\Release\MyMemo.pdb
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Release\MyMemo.Form1.resources
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Release\MyMemo.Properties.Resources.resources
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Release\MyMemo.csproj.GenerateResource.Cache
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Release\MyMemo.exe
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Release\MyMemo.pdb

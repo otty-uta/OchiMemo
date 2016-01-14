@@ -1,0 +1,17 @@
+c:\users\iforza\documents\visual studio 2015\Projects\MyMemo\MyMemo\bin\Debug\MyMemo.exe.config
+c:\users\iforza\documents\visual studio 2015\Projects\MyMemo\MyMemo\bin\Debug\MyMemo.exe
+c:\users\iforza\documents\visual studio 2015\Projects\MyMemo\MyMemo\bin\Debug\MyMemo.pdb
+c:\users\iforza\documents\visual studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.Form1.resources
+c:\users\iforza\documents\visual studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.Properties.Resources.resources
+c:\users\iforza\documents\visual studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.csproj.GenerateResource.Cache
+c:\users\iforza\documents\visual studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.exe
+c:\users\iforza\documents\visual studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.pdb
+C:\Users\iforza\documents\visual studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.csprojResolveAssemblyReference.cache
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\bin\Debug\MyMemo.exe.config
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.exe
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.pdb
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\bin\Debug\MyMemo.exe
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\bin\Debug\MyMemo.pdb
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.Form1.resources
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.Properties.Resources.resources
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.csproj.GenerateResource.Cache
