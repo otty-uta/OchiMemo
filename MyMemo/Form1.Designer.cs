@@ -42,6 +42,7 @@
 			this.MenuItemEditCopy = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItemEditPaste = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItemEditDelete = new System.Windows.Forms.ToolStripMenuItem();
+			this.MenuItemEditFind = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItemEditSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.MenuItemEditSelectAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +60,6 @@
 			this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-			this.MenuItemEditFind = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -222,6 +222,14 @@
 			this.MenuItemEditDelete.DropDownClosed += new System.EventHandler(this.MenuItemEditDelete_DropDownClosed);
 			this.MenuItemEditDelete.Click += new System.EventHandler(this.MenuItemEditDelete_Click);
 			// 
+			// MenuItemEditFind
+			// 
+			this.MenuItemEditFind.Name = "MenuItemEditFind";
+			this.MenuItemEditFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+			this.MenuItemEditFind.Size = new System.Drawing.Size(201, 22);
+			this.MenuItemEditFind.Text = "検索(&F)";
+			this.MenuItemEditFind.Click += new System.EventHandler(this.MenuItemEditFind_Click);
+			// 
 			// MenuItemEditSeparator2
 			// 
 			this.MenuItemEditSeparator2.Name = "MenuItemEditSeparator2";
@@ -326,15 +334,8 @@
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(44, 18);
-			this.toolStripStatusLabel1.Text = "文字数";
-			// 
-			// MenuItemEditFind
-			// 
-			this.MenuItemEditFind.Name = "MenuItemEditFind";
-			this.MenuItemEditFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-			this.MenuItemEditFind.Size = new System.Drawing.Size(201, 22);
-			this.MenuItemEditFind.Text = "検索(&F)";
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(83, 18);
+			this.toolStripStatusLabel1.Text = "文字数： 0 字";
 			// 
 			// Form1
 			// 

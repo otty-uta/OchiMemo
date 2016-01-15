@@ -10,8 +10,9 @@ using System.Windows.Forms;
 
 namespace MyMemo {
 	public partial class Form1 : Form {
-//変数↓↓
-		const string ApplicationName = "MyMemo";
+
+		//変数↓↓
+		const string ApplicationName = "OchiMemo";
 		const string RegistryKey = @"Software\NikkeiSoftware" + ApplicationName;
 		private string FilePath;
 		private string FileNameValue;
@@ -31,6 +32,7 @@ namespace MyMemo {
 				UpdateStatus();
 			}
 		}
+
 		private void UpdateStatus() {
 			string s = ApplicationName;
 			if (FileName != "") s += " - " + FileName;
@@ -84,6 +86,8 @@ namespace MyMemo {
 				return false;
 			}
 		}
+		Search s = null;
+
 		//変数↑↑
 
 		//イベント↓↓
@@ -141,6 +145,7 @@ namespace MyMemo {
 
 			//TODO:リスト３５「４７　印刷プレビューを可能にする」
 			printPreviewDialog1.Document = printDocument1;
+
 		}
 
 		private void MenuItemFileExit_Click(object sender, EventArgs e) {
@@ -208,10 +213,10 @@ namespace MyMemo {
 			textBoxMain.SelectAll();
 		}
 
-		private void textBoxMain_TextChanged(object sender, EventArgs e) {
+		public void textBoxMain_TextChanged(object sender, EventArgs e) {
 			this.Edited = true;
 			int iTextLength = textBoxMain.Text.Length;
-			toolStripStatusLabel1.Text = string.Format("文字数 {0} ", iTextLength.ToString());
+			toolStripStatusLabel1.Text = string.Format("文字数： {0} 字", iTextLength.ToString());
 		}
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
@@ -311,8 +316,30 @@ namespace MyMemo {
 			printPreviewDialog1.ShowDialog();
 		}
 
+		private void MenuItemEditFind_Click(object sender, EventArgs e) {
+			for (int i = 0; i < 1000; i++) {
+				if (s == null) {
+					bool status = true;
+					s = new Search();
+					s.SearchMethodCall += new Search.Searching(SearchStart);
+					s.word = textBoxMain.Text;
+					s.Show();
+					s.FinishCall += new Search.Finish(CloseSearchForm);
+				}
+			}
+		}
+
+		private void SearchStart(string searchText) {
+			string inTextBoxword = textBoxMain.Text;
+			//Console.WriteLine(inTextBoxword.IndexOf(searchText));
+			int index = inTextBoxword.IndexOf(searchText);
+			textBoxMain.Select(index,searchText.Length);
+			this.Focus();
+		}
+		private void CloseSearchForm() {
+			s = null;
+		}
 		//イベント↑↑
 
-		//toolStripStatusLabel1に現在の時刻を表示する
 	}
 }

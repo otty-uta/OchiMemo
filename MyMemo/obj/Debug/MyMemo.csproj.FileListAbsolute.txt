@@ -15,3 +15,13 @@ C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\bin\Debug\MyMe
 C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.Form1.resources
 C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.Properties.Resources.resources
 C:\Users\ochi\Documents\Visual Studio 2015\Projects\MyMemo\MyMemo\obj\Debug\MyMemo.csproj.GenerateResource.Cache
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\bin\Debug\MyMemo.exe.config
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.exe
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.pdb
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\bin\Debug\MyMemo.exe
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\bin\Debug\MyMemo.pdb
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.Form1.resources
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.Properties.Resources.resources
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.csproj.GenerateResource.Cache
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.Search.resources
+C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.csprojResolveAssemblyReference.cache
