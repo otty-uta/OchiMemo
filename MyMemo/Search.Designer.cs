@@ -97,7 +97,6 @@
 			this.Controls.Add(this.label1);
 			this.Name = "Search";
 			this.Text = "Search";
-			this.Load += new System.EventHandler(this.Search_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

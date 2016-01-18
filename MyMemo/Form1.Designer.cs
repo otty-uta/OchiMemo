@@ -60,6 +60,7 @@
 			this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.label1 = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -73,7 +74,7 @@
             this.MenuItemHelp});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(573, 26);
+			this.menuStrip1.Size = new System.Drawing.Size(647, 26);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -292,10 +293,12 @@
 			// 
 			// textBoxMain
 			// 
-			this.textBoxMain.Location = new System.Drawing.Point(0, 29);
+			this.textBoxMain.AllowDrop = true;
+			this.textBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.textBoxMain.Location = new System.Drawing.Point(41, 26);
 			this.textBoxMain.Multiline = true;
 			this.textBoxMain.Name = "textBoxMain";
-			this.textBoxMain.Size = new System.Drawing.Size(584, 359);
+			this.textBoxMain.Size = new System.Drawing.Size(606, 566);
 			this.textBoxMain.TabIndex = 1;
 			this.textBoxMain.TextChanged += new System.EventHandler(this.textBoxMain_TextChanged);
 			// 
@@ -325,9 +328,9 @@
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 360);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 592);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(573, 23);
+			this.statusStrip1.Size = new System.Drawing.Size(647, 23);
 			this.statusStrip1.TabIndex = 2;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -337,14 +340,26 @@
 			this.toolStripStatusLabel1.Size = new System.Drawing.Size(83, 18);
 			this.toolStripStatusLabel1.Text = "文字数： 0 字";
 			// 
+			// label1
+			// 
+			this.label1.AutoEllipsis = true;
+			this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+			this.label1.Dock = System.Windows.Forms.DockStyle.Left;
+			this.label1.Location = new System.Drawing.Point(0, 26);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(41, 566);
+			this.label1.TabIndex = 3;
+			// 
 			// Form1
 			// 
+			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(573, 383);
-			this.Controls.Add(this.statusStrip1);
+			this.ClientSize = new System.Drawing.Size(647, 615);
 			this.Controls.Add(this.textBoxMain);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.menuStrip1);
+			this.Controls.Add(this.statusStrip1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "Form1";
 			this.Text = "Form1";
@@ -398,6 +413,7 @@
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.ToolStripMenuItem MenuItemEditFind;
+		private System.Windows.Forms.Label label1;
 	}
 }
 

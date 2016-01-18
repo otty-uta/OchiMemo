@@ -23,21 +23,6 @@ namespace MyMemo {
 			InitializeComponent();
 		}
 
-		//public Search(string aa) {
-		//	InitializeComponent();
-		//	this.bb = aa;
-		//}
-
-		//private string bb = "";
-		//public string Ageo {
-		//	get;
-		//	set;
-		//}
-
-		private void Search_Load(object sender, EventArgs e) {
-			//this.textBoxSearchWord.Text = this.bb;
-		}
-
 		private void buttonSearchStart_Click(object sender, EventArgs e) {
 			//this.Ageo = this.textBoxSearchWord.Text;
 			string inputText = this.textBoxSearchWord.Text;

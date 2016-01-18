@@ -92,10 +92,12 @@ namespace MyMemo {
 
 		//イベント↓↓
 		private void Form1_Load(object sender, EventArgs e) {
+
 			this.FileName = "";
+
 			this.textBoxMain.Multiline = true;
 			this.textBoxMain.ScrollBars = ScrollBars.Vertical;
-			this.textBoxMain.Dock = DockStyle.Fill;
+
 			this.saveFileDialog1.Filter = "テキスト文書|*.txt|すべてのファイル|*.*";
 			fontDialog1.ShowEffects = false;
 			fontDialog1.AllowScriptChange = false;
@@ -114,6 +116,7 @@ namespace MyMemo {
 			if (bold) style = System.Drawing.FontStyle.Bold;
 			if (italic) style = style ^ System.Drawing.FontStyle.Italic;
 			textBoxMain.Font = new System.Drawing.Font(name, size, style);
+			label1.Font = new System.Drawing.Font(name, size, style);
 
 			//TODO:リスト２２「３４　ウィンドウが小さくなりすぎないように」
 			const int initialWidth = 400;
@@ -217,6 +220,33 @@ namespace MyMemo {
 			this.Edited = true;
 			int iTextLength = textBoxMain.Text.Length;
 			toolStripStatusLabel1.Text = string.Format("文字数： {0} 字", iTextLength.ToString());
+
+			#region 行番号
+			label1.Text = "1";
+			int iLineBreak = textBoxMain.Text.Length;
+			//label1.Text = string.Format("{0}", iLineBreak.ToString());
+			//「\r\n」を探し続ける
+			string LineBreak = textBoxMain.Text;
+			string kensakuStr = "\r\n";
+			int iGyosu = 1;
+			bool hantei = true;
+			int preIndex = 0;
+			while ( hantei ) {
+				//テキストボックス内で「\r\n」を探して、【　番号＋\r\n　】をlabel1に表示する
+				int i = LineBreak.IndexOf(kensakuStr,preIndex);
+				preIndex = i + kensakuStr.Length;
+				if (iGyosu != 1){
+					label1.Text = label1.Text + "\r\n" + iGyosu ;
+				}
+				Console.WriteLine(label1.Text, label1.Text + iGyosu + "\r\n");
+				iGyosu++;
+				//「\r\n」がなければ番号を表示しない
+				if (i < 0) {
+					Console.Write(label1.Text, "{ }");
+					hantei = false;
+				}
+			}
+			#endregion
 		}
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
@@ -272,8 +302,8 @@ namespace MyMemo {
 		private void MenuItemHelpVersion_Click(object sender, EventArgs e) {
 			//TODO:リスト３２「４４　バージョン情報を表示する」
 			MessageBox.Show(
-				ApplicationName + "0.01" + Environment.NewLine +
-				"(c)2009-2015 Hideo Harada", "バージョン情報");
+				ApplicationName + "0.02" + Environment.NewLine +
+				"(c)2016- Yuta Ochi", "バージョン情報");
 		}
 
 		private void MenuItemFilePrint_Click(object sender, EventArgs e) {
@@ -339,7 +369,6 @@ namespace MyMemo {
 		private void CloseSearchForm() {
 			s = null;
 		}
-		//イベント↑↑
-
+		////イベント↑↑
 	}
 }
