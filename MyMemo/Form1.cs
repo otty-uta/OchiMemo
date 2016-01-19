@@ -232,38 +232,17 @@ namespace MyMemo {
 
 
 			System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+
 			#region 行番号
 			int iLineBreak = textBoxMain.Text.Length;
 			string LineBreak = textBoxMain.Text;
 			string kensakuStr = "\r\n";
 
-			// 変更 by matsumoto
 			this.DispRowNo();
-			//label1.Text = "1";
-			//int iLineBreak = textBoxMain.Text.Length;
-			////label1.Text = string.Format("{0}", iLineBreak.ToString());
-			////「\r\n」を探し続ける
-			//string LineBreak = textBoxMain.Text;
-			//string kensakuStr = "\r\n";
-			//int iGyosu = 1;
-			//bool hantei = true;
-			//int preIndex = 0;
-			//while ( hantei ) {
-			//	//テキストボックス内で「\r\n」を探して、【　番号＋\r\n　】をlabel1に表示する
-			//	int i = LineBreak.IndexOf(kensakuStr,preIndex);
-			//	preIndex = i + kensakuStr.Length;
-			//	if (iGyosu != 1){
-			//		label1.Text = label1.Text + "\r\n" + iGyosu ;
-			//	}
-			//	Console.WriteLine(label1.Text, label1.Text + iGyosu + "\r\n");
-			//	iGyosu++;
-			//	//「\r\n」がなければ番号を表示しない
-			//	if (i < 0) {
-			//		Console.Write(label1.Text, "{ }");
-			//		hantei = false;
-			//	}
-			//}
+
 			#endregion
+			sw.Stop();
+			MessageBox.Show(sw.Elapsed.ToString());
 		}
 
 		#region 行番号表示　:　DispRowNo
@@ -273,9 +252,10 @@ namespace MyMemo {
 		private void DispRowNo() {
 			int iGyosu = 1;
 			int preIndex = 0;
-
 			int hanteiIndex = 0;
 			StringBuilder sb = new StringBuilder();
+
+			#region whileループ
 			while (hanteiIndex != -1) {
 				hanteiIndex = this.textBoxMain.Text.IndexOf(Environment.NewLine, preIndex);
 				if (hanteiIndex != -1)
@@ -284,6 +264,19 @@ namespace MyMemo {
 				iGyosu++;
 			}
 			this.label1.Text = sb.ToString();
+			#endregion
+
+			#region foreachループ
+			//sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
+			//iGyosu++;
+			//foreach (char i in textBoxMain.Text) {
+			//	if (i == '\r') {
+			//		sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
+			//		iGyosu++;
+			//	}
+			//}
+			//this.label1.Text = sb.ToString();
+			#endregion
 		}
 		#endregion
 
@@ -408,6 +401,7 @@ namespace MyMemo {
 		private void CloseSearchForm() {
 			s = null;
 		}
+
 		#region「Drag&Drop」
 		private void textBoxMain_DragEnter(object sender, DragEventArgs e) {
 			//ファイルがドラッグされている場合、カーソルを変更する
