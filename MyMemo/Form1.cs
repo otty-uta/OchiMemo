@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics; 
 
 namespace MyMemo {
 	public partial class Form1 : Form {
@@ -25,6 +26,7 @@ namespace MyMemo {
 			}
 		}
 		private bool EditedValue;
+
 		private bool Edited {
 			get { return EditedValue; }
 			set {
@@ -54,10 +56,13 @@ namespace MyMemo {
 			MenuItemFilePrint.Enabled = !b;
 			MenuItemFilePrintPreview.Enabled = !b;
 		}
+
 		public Form1() {
 			InitializeComponent();
 		}
+
 		private string PrintString;
+
 		private void LoadFile(string value) {
 			if (System.IO.File.Exists(value)) {
 				textBoxMain.Text = System.IO.File.ReadAllText(
@@ -68,11 +73,13 @@ namespace MyMemo {
 				MessageBox.Show(value + "が見付かりません。", ApplicationName);
 			}
 		}
+
 		private void SaveFile(string value) {
 			System.IO.File.WriteAllText(value, textBoxMain.Text,
 				System.Text.Encoding.GetEncoding("Shift_JIS"));
 			this.FileName = value;
 		}
+
 		private bool AskGiveUpText() {
 			if (!Edited || textBoxMain.TextLength == 0)
 				return true;
@@ -86,6 +93,7 @@ namespace MyMemo {
 				return false;
 			}
 		}
+
 		Search s = null;
 
 		//変数↑↑
@@ -221,33 +229,36 @@ namespace MyMemo {
 			int iTextLength = textBoxMain.Text.Length;
 			toolStripStatusLabel1.Text = string.Format("文字数： {0} 字", iTextLength.ToString());
 
+
+
+			System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
 			#region 行番号
-			label1.Text = "1";
 			int iLineBreak = textBoxMain.Text.Length;
-			//label1.Text = string.Format("{0}", iLineBreak.ToString());
-			//「\r\n」を探し続ける
 			string LineBreak = textBoxMain.Text;
 			string kensakuStr = "\r\n";
 			int iGyosu = 1;
 			bool hantei = true;
 			int preIndex = 0;
-			while ( hantei ) {
-				//テキストボックス内で「\r\n」を探して、【　番号＋\r\n　】をlabel1に表示する
-				int i = LineBreak.IndexOf(kensakuStr,preIndex);
-				preIndex = i + kensakuStr.Length;
-				if (iGyosu != 1){
-					label1.Text = label1.Text + "\r\n" + iGyosu ;
+			StringBuilder sb = new StringBuilder();
+			while (hantei) {
+				int lb = LineBreak.IndexOf(kensakuStr, preIndex);
+				preIndex = lb + kensakuStr.Length;
+				if (iGyosu != 0) {
+					sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
 				}
-				Console.WriteLine(label1.Text, label1.Text + iGyosu + "\r\n");
 				iGyosu++;
-				//「\r\n」がなければ番号を表示しない
-				if (i < 0) {
-					Console.Write(label1.Text, "{ }");
+				if (lb < 0) {
 					hantei = false;
 				}
 			}
 			#endregion
+			this.label1.Text = sb.ToString();
+			//ストップウォッチを止める
+			sw.Stop();
+			//結果を表示する
+			MessageBox.Show(sw.Elapsed.ToString());
 		}
+
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
 			if (!AskGiveUpText()) e.Cancel = true;
@@ -369,6 +380,29 @@ namespace MyMemo {
 		private void CloseSearchForm() {
 			s = null;
 		}
+		#region「Drag&Drop」
+		private void textBoxMain_DragEnter(object sender, DragEventArgs e) {
+			//ファイルがドラッグされている場合、カーソルを変更する
+			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+				e.Effect = DragDropEffects.Copy;
+			}
+		}
+
+		private void textBoxMain_DragDrop(object sender, DragEventArgs e) {
+			//ドロップされたファイルの一覧を取得
+			string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+			if (fileName.Length <= 0) {
+				return;
+			}
+			// ドロップ先がTextBoxであるかチェック
+			TextBox txtTarget = sender as TextBox;
+			if (txtTarget == null) {
+				return;
+			}
+			//TextBoxの内容をファイル名に変更
+			txtTarget.Text = fileName[0];
+		}
+		#endregion
 		////イベント↑↑
 	}
 }

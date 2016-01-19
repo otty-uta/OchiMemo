@@ -301,6 +301,8 @@
 			this.textBoxMain.Size = new System.Drawing.Size(606, 566);
 			this.textBoxMain.TabIndex = 1;
 			this.textBoxMain.TextChanged += new System.EventHandler(this.textBoxMain_TextChanged);
+			this.textBoxMain.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBoxMain_DragDrop);
+			this.textBoxMain.DragEnter += new System.Windows.Forms.DragEventHandler(this.textBoxMain_DragEnter);
 			// 
 			// openFileDialog1
 			// 
@@ -349,6 +351,7 @@
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(41, 566);
 			this.label1.TabIndex = 3;
+			this.label1.Text = "1";
 			// 
 			// Form1
 			// 
