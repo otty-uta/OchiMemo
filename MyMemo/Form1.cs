@@ -68,8 +68,7 @@ namespace MyMemo {
 				textBoxMain.Text = System.IO.File.ReadAllText(
 				value, System.Text.Encoding.GetEncoding("Shift_JIS"));
 				this.FileName = value;
-			}
-			else {
+			} else {
 				MessageBox.Show(value + "が見付かりません。", ApplicationName);
 			}
 		}
@@ -88,8 +87,7 @@ namespace MyMemo {
 				ApplicationName, MessageBoxButtons.YesNo,
 				MessageBoxIcon.Warning)) {
 				return true;
-			}
-			else {
+			} else {
 				return false;
 			}
 		}
@@ -157,6 +155,8 @@ namespace MyMemo {
 			//TODO:リスト３５「４７　印刷プレビューを可能にする」
 			printPreviewDialog1.Document = printDocument1;
 
+			// 追加 by matsumoto
+			this.DispRowNo();
 		}
 
 		private void MenuItemFileExit_Click(object sender, EventArgs e) {
@@ -236,28 +236,56 @@ namespace MyMemo {
 			int iLineBreak = textBoxMain.Text.Length;
 			string LineBreak = textBoxMain.Text;
 			string kensakuStr = "\r\n";
-			int iGyosu = 1;
-			bool hantei = true;
-			int preIndex = 0;
-			StringBuilder sb = new StringBuilder();
-			while (hantei) {
-				int lb = LineBreak.IndexOf(kensakuStr, preIndex);
-				preIndex = lb + kensakuStr.Length;
-				if (iGyosu != 0) {
-					sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
-				}
-				iGyosu++;
-				if (lb < 0) {
-					hantei = false;
-				}
-			}
+
+			// 変更 by matsumoto
+			this.DispRowNo();
+			//label1.Text = "1";
+			//int iLineBreak = textBoxMain.Text.Length;
+			////label1.Text = string.Format("{0}", iLineBreak.ToString());
+			////「\r\n」を探し続ける
+			//string LineBreak = textBoxMain.Text;
+			//string kensakuStr = "\r\n";
+			//int iGyosu = 1;
+			//bool hantei = true;
+			//int preIndex = 0;
+			//while ( hantei ) {
+			//	//テキストボックス内で「\r\n」を探して、【　番号＋\r\n　】をlabel1に表示する
+			//	int i = LineBreak.IndexOf(kensakuStr,preIndex);
+			//	preIndex = i + kensakuStr.Length;
+			//	if (iGyosu != 1){
+			//		label1.Text = label1.Text + "\r\n" + iGyosu ;
+			//	}
+			//	Console.WriteLine(label1.Text, label1.Text + iGyosu + "\r\n");
+			//	iGyosu++;
+			//	//「\r\n」がなければ番号を表示しない
+			//	if (i < 0) {
+			//		Console.Write(label1.Text, "{ }");
+			//		hantei = false;
+			//	}
+			//}
 			#endregion
-			this.label1.Text = sb.ToString();
-			//ストップウォッチを止める
-			sw.Stop();
-			//結果を表示する
-			MessageBox.Show(sw.Elapsed.ToString());
 		}
+
+		#region 行番号表示　:　DispRowNo
+		/// <summary>
+		/// 行番号表示
+		/// </summary>
+		private void DispRowNo() {
+			int iGyosu = 1;
+			int preIndex = 0;
+
+			int hanteiIndex = 0;
+			StringBuilder sb = new StringBuilder();
+			while (hanteiIndex != -1) {
+				hanteiIndex = this.textBoxMain.Text.IndexOf(Environment.NewLine, preIndex);
+				if (hanteiIndex != -1)
+					preIndex = hanteiIndex + Environment.NewLine.Length;
+				sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
+				iGyosu++;
+			}
+			this.label1.Text = sb.ToString();
+		}
+		#endregion
 
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
@@ -374,7 +402,7 @@ namespace MyMemo {
 			string inTextBoxword = textBoxMain.Text;
 			//Console.WriteLine(inTextBoxword.IndexOf(searchText));
 			int index = inTextBoxword.IndexOf(searchText);
-			textBoxMain.Select(index,searchText.Length);
+			textBoxMain.Select(index, searchText.Length);
 			this.Focus();
 		}
 		private void CloseSearchForm() {
