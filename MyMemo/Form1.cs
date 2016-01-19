@@ -7,24 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics; 
+using System.Diagnostics;
 
 namespace MyMemo {
 	public partial class Form1 : Form {
 
-		//変数↓↓
-		const string ApplicationName = "OchiMemo";
-		const string RegistryKey = @"Software\NikkeiSoftware" + ApplicationName;
-		private string FilePath;
-		private string FileNameValue;
+		#region: 変数
+
+		private const string ApplicationName = "OchiMemo";
+
+		private const string RegistryKey = @"Software\NikkeiSoftware" + ApplicationName;
+
+		private string _filePath;
+
+		private string _fileNameValue;
+
 		private string FileName {
-			get { return FileNameValue; }
+			get { return _fileNameValue; }
 			set {
-				this.FileNameValue = value;
-				if (value != "") FilePath = System.IO.Path.GetDirectoryName(value);
+				this._fileNameValue = value;
+				if (value != "") _filePath = System.IO.Path.GetDirectoryName(value);
 				this.Edited = false;
 			}
 		}
+
 		private bool EditedValue;
 
 		private bool Edited {
@@ -61,14 +67,14 @@ namespace MyMemo {
 			InitializeComponent();
 		}
 
-		private string PrintString;
 
 		private void LoadFile(string value) {
 			if (System.IO.File.Exists(value)) {
 				textBoxMain.Text = System.IO.File.ReadAllText(
 				value, System.Text.Encoding.GetEncoding("Shift_JIS"));
 				this.FileName = value;
-			} else {
+			}
+			else {
 				MessageBox.Show(value + "が見付かりません。", ApplicationName);
 			}
 		}
@@ -87,16 +93,87 @@ namespace MyMemo {
 				ApplicationName, MessageBoxButtons.YesNo,
 				MessageBoxIcon.Warning)) {
 				return true;
-			} else {
+			}
+			else {
 				return false;
 			}
 		}
 
+
+		#region 行番号表示　:　DispRowNo
+
+		/// <summary>
+		/// 行番号表示
+		/// </summary>
+		private void DispRowNo() {
+			int iGyosu = 1;
+			int preIndex = 0;
+			int hanteiIndex = 0;
+			StringBuilder sb = new StringBuilder();
+
+			#region whileループ
+			while (hanteiIndex != -1) {
+				hanteiIndex = this.textBoxMain.Text.IndexOf(Environment.NewLine, preIndex);
+				if (hanteiIndex != -1)
+					preIndex = hanteiIndex + Environment.NewLine.Length;
+				sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
+				iGyosu++;
+			}
+			this.label1.Text = sb.ToString();
+			#endregion
+
+			#region foreachループ
+			//sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
+			//iGyosu++;
+			//foreach (char i in textBoxMain.Text) {
+			//	if (i == '\r') {
+			//		sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
+			//		iGyosu++;
+			//	}
+			//}
+			//this.label1.Text = sb.ToString();
+			#endregion
+		}
+
+		#endregion
+
+
+		#region:印刷
+
+		private void SetPrintDocument1() {
+			//TODO:リスト３３「４５　印刷機能をつける」
+			PrintString = textBoxMain.Text;
+			printDocument1.DefaultPageSettings.Margins =
+				new System.Drawing.Printing.Margins(20, 60, 20, 60);
+			printDocument1.DocumentName = FileName;
+		}
+		private string PrintString;
+
+		#endregion
+
+
+		#region:検索
+
+		private void SearchStart(string searchText) {
+			string inTextBoxword = textBoxMain.Text;
+			//Console.WriteLine(inTextBoxword.IndexOf(searchText));
+			int index = inTextBoxword.IndexOf(searchText);
+			textBoxMain.Select(index, searchText.Length);
+			this.Focus();
+		}
+		private void CloseSearchForm() {
+			s = null;
+		}
 		Search s = null;
 
-		//変数↑↑
+		#endregion
 
-		//イベント↓↓
+		#endregion
+
+
+		#region: イベント
+
+		#region:Form,TextBox
 		private void Form1_Load(object sender, EventArgs e) {
 
 			this.FileName = "";
@@ -110,7 +187,7 @@ namespace MyMemo {
 
 			Microsoft.Win32.RegistryKey regKey =
 				Microsoft.Win32.Registry.CurrentUser.CreateSubKey(RegistryKey);
-			FilePath = regKey.GetValue("FilePath", System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)).
+			_filePath = regKey.GetValue("FilePath", System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)).
 				ToString();
 
 			//TODO:リスト２１「３３フォントの設定を覚える」
@@ -155,27 +232,71 @@ namespace MyMemo {
 			//TODO:リスト３５「４７　印刷プレビューを可能にする」
 			printPreviewDialog1.Document = printDocument1;
 
-			// 追加 by matsumoto
 			this.DispRowNo();
 		}
 
+		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
+			if (!AskGiveUpText()) e.Cancel = true;
+		}
+
+		private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
+			Microsoft.Win32.RegistryKey regKey =
+				Microsoft.Win32.Registry.CurrentUser.CreateSubKey(RegistryKey);
+			regKey.SetValue("FilePath", _filePath);
+			//TODO:リスト２０「３３フォントの設定を覚える」
+			regKey.SetValue("FontName", textBoxMain.Font.Name);
+			regKey.SetValue("FontSize", textBoxMain.Font.Size);
+			regKey.SetValue("FontBold", textBoxMain.Font.Bold);
+			regKey.SetValue("FontItalic", textBoxMain.Font.Italic);
+			//TODO:リスト２３「３５　ウィンドウの位置と大きさを覚える」
+			regKey.SetValue("Left", DesktopBounds.Left);
+			regKey.SetValue("Top", DesktopBounds.Top);
+			regKey.SetValue("Width", DesktopBounds.Width);
+			regKey.SetValue("Height", DesktopBounds.Height);
+		}
+
+		public void textBoxMain_TextChanged(object sender, EventArgs e) {
+			this.Edited = true;
+			int iTextLength = textBoxMain.Text.Length;
+			toolStripStatusLabel1.Text = string.Format("文字数： {0} 字", iTextLength.ToString());
+
+
+			//処理速度表示
+			System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+
+			#region 行番号
+			int iLineBreak = textBoxMain.Text.Length;
+			string LineBreak = textBoxMain.Text;
+			string kensakuStr = "\r\n";
+
+			this.DispRowNo();
+
+			#endregion
+			sw.Stop();
+			MessageBox.Show(sw.Elapsed.ToString());
+		}
+
+		#endregion
+
+
+		#region:MenuItemFile
 		private void MenuItemFileExit_Click(object sender, EventArgs e) {
 			this.Close();
 		}
 
 		private void MenuItemFileOpen_Click(object sender, EventArgs e) {
 			if (!AskGiveUpText()) return;
-			this.openFileDialog1.InitialDirectory = FilePath;
+			this.openFileDialog1.InitialDirectory = _filePath;
 			this.openFileDialog1.FileName = "";
 			if (DialogResult.OK == openFileDialog1.ShowDialog())
-				LoadFile(openFileDialog1.FileName);
+				this.LoadFile(openFileDialog1.FileName);
 		}
 
 		private void MenuItemFileSaveAs_Click(object sender, EventArgs e) {
-			saveFileDialog1.InitialDirectory = FilePath;
+			saveFileDialog1.InitialDirectory = _filePath;
 			saveFileDialog1.FileName = System.IO.Path.GetFileName(FileName);
 			if (DialogResult.OK == saveFileDialog1.ShowDialog())
-				SaveFile(saveFileDialog1.FileName);
+				this.SaveFile(saveFileDialog1.FileName);
 		}
 
 		private void MenuItemFileSave_Click(object sender, EventArgs e) {
@@ -188,12 +309,46 @@ namespace MyMemo {
 			FileName = "";
 		}
 
-		private void MenuItemSettingFont_Click(object sender, EventArgs e) {
-			fontDialog1.Font = textBoxMain.Font;
-			if (DialogResult.OK == fontDialog1.ShowDialog())
-				textBoxMain.Font = fontDialog1.Font;
+		private void MenuItemFilePrint_Click(object sender, EventArgs e) {
+			//TODO:リスト３３「４５　印刷機能をつける」
+			//TODO:リスト３４「４６　印刷ダイアログを出す」
+			if (DialogResult.OK == printDialog1.ShowDialog()) {
+				SetPrintDocument1();
+				printDocument1.Print();
+			}
 		}
 
+		#region:Print
+
+		private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e) {
+			//TODO:リスト３３「４５　印刷機能をつける」
+			int charactersOnPage = 0;
+			int linesPerPage = 0;
+			e.Graphics.MeasureString(PrintString, textBoxMain.Font, e.MarginBounds.Size,
+				System.Drawing.StringFormat.GenericTypographic, out charactersOnPage, out linesPerPage);
+			e.Graphics.DrawString(PrintString, textBoxMain.Font, System.Drawing.Brushes.Black, e.MarginBounds,
+				System.Drawing.StringFormat.GenericTypographic);
+			PrintString = PrintString.Substring(charactersOnPage);
+			if (PrintString.Length > 0)
+				e.HasMorePages = true;
+			else {
+				e.HasMorePages = false;
+				PrintString = textBoxMain.Text;
+			}
+		}
+
+		private void MenuItemFilePrintPreview_Click(object sender, EventArgs e) {
+			//TODO:リスト３４「４６　印刷ダイアログを出す」※動いてない！！！！
+			SetPrintDocument1();
+			printPreviewDialog1.ShowDialog();
+		}
+
+		#endregion
+
+		#endregion
+
+
+		#region:MenuItemEdit
 		private void MenuItemEditUndo_Click(object sender, EventArgs e) {
 			//TODO:リスト２５「３７　アンドゥを作る」
 			textBoxMain.Undo();
@@ -224,83 +379,6 @@ namespace MyMemo {
 			textBoxMain.SelectAll();
 		}
 
-		public void textBoxMain_TextChanged(object sender, EventArgs e) {
-			this.Edited = true;
-			int iTextLength = textBoxMain.Text.Length;
-			toolStripStatusLabel1.Text = string.Format("文字数： {0} 字", iTextLength.ToString());
-
-
-
-			System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
-
-			#region 行番号
-			int iLineBreak = textBoxMain.Text.Length;
-			string LineBreak = textBoxMain.Text;
-			string kensakuStr = "\r\n";
-
-			this.DispRowNo();
-
-			#endregion
-			sw.Stop();
-			MessageBox.Show(sw.Elapsed.ToString());
-		}
-
-		#region 行番号表示　:　DispRowNo
-		/// <summary>
-		/// 行番号表示
-		/// </summary>
-		private void DispRowNo() {
-			int iGyosu = 1;
-			int preIndex = 0;
-			int hanteiIndex = 0;
-			StringBuilder sb = new StringBuilder();
-
-			#region whileループ
-			while (hanteiIndex != -1) {
-				hanteiIndex = this.textBoxMain.Text.IndexOf(Environment.NewLine, preIndex);
-				if (hanteiIndex != -1)
-					preIndex = hanteiIndex + Environment.NewLine.Length;
-				sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
-				iGyosu++;
-			}
-			this.label1.Text = sb.ToString();
-			#endregion
-
-			#region foreachループ
-			//sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
-			//iGyosu++;
-			//foreach (char i in textBoxMain.Text) {
-			//	if (i == '\r') {
-			//		sb.Append(iGyosu.ToString()).Append(Environment.NewLine);
-			//		iGyosu++;
-			//	}
-			//}
-			//this.label1.Text = sb.ToString();
-			#endregion
-		}
-		#endregion
-
-
-		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
-			if (!AskGiveUpText()) e.Cancel = true;
-		}
-
-		private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
-			Microsoft.Win32.RegistryKey regKey =
-				Microsoft.Win32.Registry.CurrentUser.CreateSubKey(RegistryKey);
-			regKey.SetValue("FilePath", FilePath);
-			//TODO:リスト２０「３３フォントの設定を覚える」
-			regKey.SetValue("FontName", textBoxMain.Font.Name);
-			regKey.SetValue("FontSize", textBoxMain.Font.Size);
-			regKey.SetValue("FontBold", textBoxMain.Font.Bold);
-			regKey.SetValue("FontItalic", textBoxMain.Font.Italic);
-			//TODO:リスト２３「３５　ウィンドウの位置と大きさを覚える」
-			regKey.SetValue("Left", DesktopBounds.Left);
-			regKey.SetValue("Top", DesktopBounds.Top);
-			regKey.SetValue("Width", DesktopBounds.Width);
-			regKey.SetValue("Height", DesktopBounds.Height);
-		}
-
 		private void MenuItemEdit_DropDownOpening(object sender, EventArgs e) {
 			//TODO:リスト２９「４１不要なものは無効にする」
 			MenuItemEditPaste.Enabled = Clipboard.ContainsText();
@@ -316,6 +394,33 @@ namespace MyMemo {
 			MenuItemEditDelete.Enabled = false;
 		}
 
+		private void MenuItemEditFind_Click(object sender, EventArgs e) {
+			for (int i = 0; i < 1000; i++) {
+				if (s == null) {
+					bool status = true;
+					s = new Search();
+					s.SearchMethodCall += new Search.Searching(SearchStart);
+					s.word = textBoxMain.Text;
+					s.Show();
+					s.FinishCall += new Search.Finish(CloseSearchForm);
+				}
+			}
+		}
+
+		#endregion
+
+
+		#region:MenuItemSetting
+		private void MenuItemSettingFont_Click(object sender, EventArgs e) {
+			fontDialog1.Font = textBoxMain.Font;
+			if (DialogResult.OK == fontDialog1.ShowDialog())
+				textBoxMain.Font = fontDialog1.Font;
+		}
+
+		#endregion
+
+
+		#region:MenuItemHelp
 		private void MenuItemHelpReadMe_Click(object sender, EventArgs e) {
 			//TODO:リスト３０「４２　テキストファイルを表示する」
 			string s = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
@@ -338,93 +443,33 @@ namespace MyMemo {
 				"(c)2016- Yuta Ochi", "バージョン情報");
 		}
 
-		private void MenuItemFilePrint_Click(object sender, EventArgs e) {
-			//TODO:リスト３３「４５　印刷機能をつける」
-			//TODO:リスト３４「４６　印刷ダイアログを出す」
-			if (DialogResult.OK == printDialog1.ShowDialog()) {
-				SetPrintDocument1();
-				printDocument1.Print();
-			}
-		}
+		#endregion
 
-		private void SetPrintDocument1() {
-			//TODO:リスト３３「４５　印刷機能をつける」
-			PrintString = textBoxMain.Text;
-			printDocument1.DefaultPageSettings.Margins =
-				new System.Drawing.Printing.Margins(20, 60, 20, 60);
-			printDocument1.DocumentName = FileName;
-		}
 
-		private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e) {
-			//TODO:リスト３３「４５　印刷機能をつける」
-			int charactersOnPage = 0;
-			int linesPerPage = 0;
-			e.Graphics.MeasureString(PrintString, textBoxMain.Font, e.MarginBounds.Size,
-				System.Drawing.StringFormat.GenericTypographic, out charactersOnPage, out linesPerPage);
-			e.Graphics.DrawString(PrintString, textBoxMain.Font, System.Drawing.Brushes.Black, e.MarginBounds,
-				System.Drawing.StringFormat.GenericTypographic);
-			PrintString = PrintString.Substring(charactersOnPage);
-			if (PrintString.Length > 0)
-				e.HasMorePages = true;
-			else {
-				e.HasMorePages = false;
-				PrintString = textBoxMain.Text;
-			}
-		}
+		#region:Drag&Drop
 
-		private void MenuItemFilePrintPreview_Click(object sender, EventArgs e) {
-			//TODO:リスト３４「４６　印刷ダイアログを出す」※動いてない！！！！
-			SetPrintDocument1();
-			printPreviewDialog1.ShowDialog();
-		}
-
-		private void MenuItemEditFind_Click(object sender, EventArgs e) {
-			for (int i = 0; i < 1000; i++) {
-				if (s == null) {
-					bool status = true;
-					s = new Search();
-					s.SearchMethodCall += new Search.Searching(SearchStart);
-					s.word = textBoxMain.Text;
-					s.Show();
-					s.FinishCall += new Search.Finish(CloseSearchForm);
-				}
-			}
-		}
-
-		private void SearchStart(string searchText) {
-			string inTextBoxword = textBoxMain.Text;
-			//Console.WriteLine(inTextBoxword.IndexOf(searchText));
-			int index = inTextBoxword.IndexOf(searchText);
-			textBoxMain.Select(index, searchText.Length);
-			this.Focus();
-		}
-		private void CloseSearchForm() {
-			s = null;
-		}
-
-		#region「Drag&Drop」
 		private void textBoxMain_DragEnter(object sender, DragEventArgs e) {
-			//ファイルがドラッグされている場合、カーソルを変更する
 			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
 				e.Effect = DragDropEffects.Copy;
 			}
 		}
 
 		private void textBoxMain_DragDrop(object sender, DragEventArgs e) {
-			//ドロップされたファイルの一覧を取得
 			string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 			if (fileName.Length <= 0) {
 				return;
 			}
-			// ドロップ先がTextBoxであるかチェック
-			TextBox txtTarget = sender as TextBox;
-			if (txtTarget == null) {
+
+			if (this.textBoxMain == null) {
 				return;
 			}
-			//TextBoxの内容をファイル名に変更
-			txtTarget.Text = fileName[0];
+			this.LoadFile(fileName[0]);
+
 		}
+
+
 		#endregion
-		////イベント↑↑
+
+		#endregion イベント↑↑
 	}
 }

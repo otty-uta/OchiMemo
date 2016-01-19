@@ -24,4 +24,3 @@ C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\My
 C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.Properties.Resources.resources
 C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.csproj.GenerateResource.Cache
 C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.Search.resources
-C:\Users\ochi\Documents\Visual Studio 2015\Projects\OchiMemo\MyMemo\obj\Debug\MyMemo.csprojResolveAssemblyReference.cache
