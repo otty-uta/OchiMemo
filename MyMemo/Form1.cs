@@ -275,6 +275,7 @@ namespace MyMemo {
 			int preIndex = 0;
 
 			int hanteiIndex = 0;
+			// 時間計測を実装してほしい
 			StringBuilder sb = new StringBuilder();
 			while (hanteiIndex != -1) {
 				hanteiIndex = this.textBoxMain.Text.IndexOf(Environment.NewLine, preIndex);
